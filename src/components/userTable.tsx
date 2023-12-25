@@ -22,7 +22,6 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
 import { useEffect } from "react";
 import axios from "axios";
-import styled from "styled-components";
 
 interface Data {
   id: number;
@@ -429,8 +428,8 @@ export default function () {
                     {row.bio ? (
                       <TableCell align="right">{row.bio.info}</TableCell>
                     ) : null}
+
                     <TableCell align="right">{row.password}</TableCell>
-                    <TableCell align="right">{}</TableCell>
                   </TableRow>
                 );
               })}
