@@ -118,31 +118,37 @@ const headCells: readonly HeadCell[] = [
     id: "name",
     numeric: false,
     disablePadding: true,
-    label: "Dessert (100g serving)",
+    label: "Email",
   },
   {
-    id: "calories",
+    id: "name",
     numeric: true,
     disablePadding: false,
-    label: "Calories",
+    label: "Username",
   },
   {
-    id: "fat",
+    id: "name",
     numeric: true,
     disablePadding: false,
-    label: "Fat (g)",
+    label: "Surname",
   },
   {
-    id: "carbs",
+    id: "name",
     numeric: true,
     disablePadding: false,
-    label: "Carbs (g)",
+    label: "Country",
   },
   {
-    id: "protein",
+    id: "name",
     numeric: true,
     disablePadding: false,
-    label: "Protein (g)",
+    label: "Hobbies",
+  },
+  {
+    id: "name",
+    numeric: true,
+    disablePadding: false,
+    label: "Password",
   },
 ];
 
@@ -258,7 +264,12 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           style={{ backgroundColor: "red", color: "white" }}
         >
           <IconButton>
-            <DeleteIcon />
+            <DeleteIcon
+              onClick={(e) => {
+                e.preventDefault();
+                console.log("salam");
+              }}
+            />
           </IconButton>
         </Tooltip>
       ) : (
@@ -281,11 +292,16 @@ export default function () {
   const [data, setData] = React.useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/users").then((res) => {
+    axios.get("https://depapi.onrender.com/users").then((res) => {
       setData(res.data);
     });
   }, []),
     console.log(data);
+
+  // deleteUser: (state, action: PayloadAction<String>) => {
+  //   state.users = state.users.filter((user) => user.id !== action.payload);
+  //   axios.delete("http://localhost:5000/users/${action.payload}");
+  // };
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -354,100 +370,96 @@ export default function () {
   );
 
   return (
-    <div>
-      {data &&
-        data.map((item) => (
-          <div key={item.id}>
-            {item.country && <span>Country: {item.country}</span>}
-            <Box sx={{ width: "100%" }}>
-              <Paper sx={{ width: "100%", mb: 2, backgroundColor: "#10e2ab" }}>
-                <EnhancedTableToolbar numSelected={selected.length} />
-                <TableContainer>
-                  <Table
-                    sx={{ minWidth: 750 }}
-                    aria-labelledby="tableTitle"
-                    size={dense ? "small" : "medium"}
-                  >
-                    <EnhancedTableHead
-                      numSelected={selected.length}
-                      order={order}
-                      orderBy={orderBy}
-                      onSelectAllClick={handleSelectAllClick}
-                      onRequestSort={handleRequestSort}
-                      rowCount={rows.length}
-                    />
-                    <TableBody>
-                      {data.map((row, index) => {
-                        console.log(row);
-                        const isItemSelected = isSelected(row.id);
-                        const labelId = `enhanced-table-checkbox-${index}`;
+    <Box sx={{ width: "100%" }}>
+      <Paper sx={{ width: "100%", mb: 2, backgroundColor: "#10e2ab" }}>
+        <EnhancedTableToolbar numSelected={selected.length} />
+        <TableContainer>
+          <Table
+            sx={{ minWidth: 750 }}
+            aria-labelledby="tableTitle"
+            size={dense ? "small" : "medium"}
+          >
+            <EnhancedTableHead
+              numSelected={selected.length}
+              order={order}
+              orderBy={orderBy}
+              onSelectAllClick={handleSelectAllClick}
+              onRequestSort={handleRequestSort}
+              rowCount={rows.length}
+            />
+            <TableBody>
+              {data.map((row, index) => {
+                console.log(row);
+                const isItemSelected = isSelected(row.id);
+                const labelId = `enhanced-table-checkbox-${index}`;
 
-                        return (
-                          <TableRow
-                            hover
-                            onClick={(event) => handleClick(event, row.id)}
-                            role="checkbox"
-                            aria-checked={isItemSelected}
-                            tabIndex={-1}
-                            key={row.id}
-                            selected={isItemSelected}
-                            sx={{ cursor: "pointer" }}
-                          >
-                            <TableCell padding="checkbox">
-                              <Checkbox
-                                color="primary"
-                                checked={isItemSelected}
-                                inputProps={{
-                                  "aria-labelledby": labelId,
-                                }}
-                              />
-                            </TableCell>
-                            <TableCell
-                              component="th"
-                              id={labelId}
-                              scope="row"
-                              padding="none"
-                            >
-                              {row.email}
-                            </TableCell>
-                            <TableCell align="right">{row.username}</TableCell>
-                            <TableCell align="right">{row.surname}</TableCell>
-                            <TableCell align="right">{row.password}</TableCell>
-                            <TableCell align="right">{row.bio.info}</TableCell>
-                          </TableRow>
-                        );
-                      })}
-                      {emptyRows > 0 && (
-                        <TableRow
-                          style={{
-                            height: (dense ? 33 : 53) * emptyRows,
-                          }}
-                        >
-                          <TableCell colSpan={6} />
-                        </TableRow>
-                      )}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-                <TablePagination
-                  rowsPerPageOptions={[5, 10, 25]}
-                  component="div"
-                  count={rows.length}
-                  rowsPerPage={rowsPerPage}
-                  page={page}
-                  onPageChange={handleChangePage}
-                  onRowsPerPageChange={handleChangeRowsPerPage}
-                />
-              </Paper>
-              <FormControlLabel
-                control={
-                  <Switch checked={dense} onChange={handleChangeDense} />
-                }
-                label="Dense padding"
-              />
-            </Box>
-          </div>
-        ))}
-    </div>
+                return (
+                  <TableRow
+                    hover
+                    onClick={(event) => handleClick(event, row.id)}
+                    role="checkbox"
+                    aria-checked={isItemSelected}
+                    tabIndex={-1}
+                    key={row.id}
+                    selected={isItemSelected}
+                    sx={{ cursor: "pointer" }}
+                  >
+                    <TableCell padding="checkbox">
+                      <Checkbox
+                        color="primary"
+                        checked={isItemSelected}
+                        inputProps={{
+                          "aria-labelledby": labelId,
+                        }}
+                      />
+                    </TableCell>
+                    <TableCell
+                      component="th"
+                      id={labelId}
+                      scope="row"
+                      padding="none"
+                    >
+                      {row.email}
+                    </TableCell>
+                    <TableCell align="right">{row.username}</TableCell>
+                    <TableCell align="right">{row.surname}</TableCell>
+                    {row.bio ? (
+                      <TableCell align="right">{row.bio.country}</TableCell>
+                    ) : null}
+                    {row.bio ? (
+                      <TableCell align="right">{row.bio.info}</TableCell>
+                    ) : null}
+                    <TableCell align="right">{row.password}</TableCell>
+                    <TableCell align="right">{}</TableCell>
+                  </TableRow>
+                );
+              })}
+              {emptyRows > 0 && (
+                <TableRow
+                  style={{
+                    height: (dense ? 33 : 53) * emptyRows,
+                  }}
+                >
+                  <TableCell colSpan={6} />
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={rows.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </Paper>
+      <FormControlLabel
+        control={<Switch checked={dense} onChange={handleChangeDense} />}
+        label="Dense padding"
+      />
+    </Box>
   );
 }

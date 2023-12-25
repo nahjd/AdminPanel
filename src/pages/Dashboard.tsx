@@ -20,6 +20,7 @@ import AddUser from "./AddUser";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Home from "./Home";
+
 const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== "open",
 })(({ theme, open }) => ({
@@ -77,10 +78,13 @@ export default function Dashboard() {
               component="nav"
               style={{
                 color: "black",
+                backgroundColor: "#3f5efb",
                 border: "none",
-                fontSize: "20px",
+                fontSize: "25px",
                 cursor: "Pointer",
                 listStyle: "none",
+                textAlign: "center",
+                textDecoration: "none",
               }}
             >
               Home
@@ -96,10 +100,13 @@ export default function Dashboard() {
               component="nav"
               style={{
                 color: "black",
+                backgroundColor: "#3f5efb",
                 border: "none",
-                fontSize: "20px",
+                fontSize: "25px",
                 cursor: "Pointer",
                 listStyle: "none",
+                textAlign: "center",
+                textDecoration: "none",
               }}
             >
               Add User
