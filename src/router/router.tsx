@@ -2,11 +2,11 @@ import React, { Children } from "react";
 import AddUser from "../pages/AddUser";
 import Dashboard from "../pages/Dashboard";
 import Home from "../pages/Home";
-
+import AdminRoot from "../pages/AdminRoot";
 const router = [
   {
     path: "/",
-    element: <Dashboard />,
+    element: <AdminRoot />,
 
     children: [
       {
