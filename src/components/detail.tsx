@@ -11,11 +11,41 @@ import axios from "axios";
 
 const Home = () => {
   const [users, setUsers] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState([]);
+
   useEffect(() => {
     axios.get("https://depapi.onrender.com/users").then((res) => {
       setUsers(res.data);
+      setFilteredUsers(res.data);
     });
   }, []);
+
+  const handleSearch = (value) => {
+    const trimmedValue = value.trim();
+    if (trimmedValue === "") {
+      setFilteredUsers(users);
+    } else {
+      const filtered = users.filter((user) =>
+        user.posts.some(
+          (post) =>
+            post.tittle.toLowerCase().includes(trimmedValue.toLowerCase()) ||
+            user.username.toLowerCase().includes(trimmedValue.toLowerCase())
+        )
+      );
+      setFilteredUsers(filtered);
+    }
+  };
+
+  const handleDelete = (userId) => {
+    setUsers((prevUsers) => prevUsers.filter((user) => user._id !== userId));
+    setFilteredUsers((prevFiltered) =>
+      prevFiltered.filter((user) => user._id !== userId)
+    );
+
+    axios.delete(`https://depapi.onrender.com/users/${userId}`).then((res) => {
+      console.log("User deleted successfully!");
+    });
+  };
 
   return (
     <>
@@ -38,23 +68,7 @@ const Home = () => {
                 id="outlined-basic"
                 label="Search Users"
                 variant="outlined"
-                onChange={(e) => {
-                  if (e.target.value.trim() == "") {
-                    axios
-                      .get(`https://depapi.onrender.com/users`)
-                      .then((res) => {
-                        setUsers(res.data);
-                      });
-                  } else {
-                    axios
-                      .get(
-                        `https://depapi.onrender.com/users=${e.target.value}`
-                      )
-                      .then((res) => {
-                        setUsers(res.data);
-                      });
-                  }
-                }}
+                onChange={(e) => handleSearch(e.target.value)}
               />
             </Box>
           </Grid>
@@ -64,25 +78,26 @@ const Home = () => {
               size="large"
               style={{ margin: "10px auto" }}
               onClick={() => {
-                let filtered = [...users].sort((a, b) => a.age - b.age);
-                console.log(filtered);
-                setUsers(filtered);
+                let filtered = [...filteredUsers].sort((a, b) => a.age - b.age);
+                setFilteredUsers(filtered);
               }}
             >
               Search
             </Button>
           </Grid>
-          {users &&
-            users.map((item) => {
+          {filteredUsers &&
+            filteredUsers.map((item) => {
               return (
                 <Grid item xs={6} key={item._id}>
                   <Card sx={{ width: 300 }}>
-                    <CardMedia
-                      component="img"
-                      alt="green iguana"
-                      height="240"
-                      image={item.posts.imageSRC}
-                    />
+                    {item.posts.length > 0 && (
+                      <CardMedia
+                        component="img"
+                        alt="post image"
+                        height="240"
+                        image={item.posts[0].imageSrc}
+                      />
+                    )}
                     <Grid
                       style={{
                         display: "flex",
@@ -90,15 +105,15 @@ const Home = () => {
                       }}
                     >
                       <Grid style={{ paddingLeft: "30px", paddingTop: "20px" }}>
-                        <p>{item.tittle}</p>
+                        <p>{item.posts.length > 0 && item.posts[0].tittle}</p>
                       </Grid>
-
                       <Grid
                         style={{ paddingRight: "30px", paddingTop: "20px" }}
                       >
                         <Button
                           size="large"
                           style={{ backgroundColor: "darkred", color: "white" }}
+                          onClick={() => handleDelete(item._id)}
                         >
                           Delete
                         </Button>
