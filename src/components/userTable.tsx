@@ -291,7 +291,7 @@ export default function () {
   const [data, setData] = React.useState([]);
 
   useEffect(() => {
-    axios.get("https://depapi.onrender.com/users").then((res) => {
+    axios.get("http://localhost:5000/users").then((res) => {
       setData(res.data);
     });
   }, []),

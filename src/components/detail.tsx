@@ -14,7 +14,7 @@ const Home = () => {
   const [filteredUsers, setFilteredUsers] = useState([]);
 
   useEffect(() => {
-    axios.get("https://depapi.onrender.com/users").then((res) => {
+    axios.get("http://localhost:5000/users").then((res) => {
       setUsers(res.data);
       setFilteredUsers(res.data);
     });
@@ -42,7 +42,7 @@ const Home = () => {
       prevFiltered.filter((user) => user._id !== userId)
     );
 
-    axios.delete(`https://depapi.onrender.com/users/${userId}`).then((res) => {
+    axios.delete(`http://localhost:5000/users/${userId}`).then((res) => {
       console.log("User deleted successfully!");
     });
   };

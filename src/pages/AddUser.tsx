@@ -6,6 +6,8 @@ const AddUser = () => {
   const [surname, setSurname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  // const [country, setCountry] = useState("");
+  // const [hobbies, setHobbies] = useState("");
   const [data, setData] = useState("");
 
   const handleAddUser = (e) => {
@@ -16,6 +18,8 @@ const AddUser = () => {
       surname: surname,
       email: email,
       password: password,
+      // country: country,
+      // hobbies: hobbies,
       isPublic: "true",
       post: [],
       follower: [],
@@ -27,7 +31,7 @@ const AddUser = () => {
     };
 
     axios
-      .post("https://depapi.onrender.com/users", newUser)
+      .post("http://localhost:5000/users", newUser)
       .then((res) => {
         setData(res.data);
         console.log(data);
@@ -73,6 +77,32 @@ const AddUser = () => {
           value={surname}
           onChange={(e) => setSurname(e.target.value)}
         />
+        {/* <input
+          style={{
+            fontSize: "30px",
+            textAlign: "center",
+            width: "100%",
+            height: "50px",
+            marginTop: "20px",
+          }}
+          type="text"
+          placeholder="Enter the Country"
+          value={country}
+          onChange={(e) => setCountry(e.target.value)}
+        /> */}
+        {/* <input
+          style={{
+            fontSize: "30px",
+            textAlign: "center",
+            width: "100%",
+            height: "50px",
+            marginTop: "20px",
+          }}
+          type="text"
+          placeholder="Enter the Hobbies"
+          value={hobbies}
+          onChange={(e) => setHobbies(e.target.value)}
+        /> */}
 
         <input
           style={{
